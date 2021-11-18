@@ -11,10 +11,7 @@
       <ion-card-content>
         <ion-item>
           <ion-label position="floating">Usuario</ion-label>
-          <ion-input
-            type="text"
-            [(ngModel)]="login.Usuario"
-          ></ion-input>
+          <ion-input type="text" [(ngModel)]="login.Usuario"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
@@ -23,7 +20,7 @@
         <ion-row>
           <ion-col size="12">
             <ion-button color="warning" shape="block" (click)="ingresar()">Ingresar</ion-button>
-            <ion-button color="warning" shape="block" (click)="registrar()">Registrarse</ion-button>
+            <ion-button color="warning" shape="block" routerLink="/register">Registrate</ion-button>
           </ion-col>
         </ion-row>
       </ion-card-content>
