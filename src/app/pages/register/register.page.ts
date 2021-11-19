@@ -21,7 +21,7 @@ export class RegisterPage implements OnInit {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Password: '',
 
-    RepetirPassword: ''
+    repetirPassword: ''
   };
 
   field='';
@@ -40,7 +40,16 @@ export class RegisterPage implements OnInit {
 
 
   registrar(){
-    this.createSessionData(this.login);
+    // eslint-disable-next-line eqeqeq
+    if (this.login.Password == this.login.repetirPassword) {
+      if(this.login.Password.length < 4 || this.login.Password.length > 4){
+        this.presentToast('La contraseña debe tener 4 caracteres de largo.');
+      } else {
+        this.createSessionData(this.login);
+      }
+    } else {
+      this.presentToast('Las contraseñas no son idénticas.');
+    }
   }
 
   createSessionData(login: any) {
@@ -50,7 +59,7 @@ export class RegisterPage implements OnInit {
       copy.Active=1;
       this.dbtaskService.createSessionData(copy)
       .then((data)=>{
-        this.presentToast('Registrado correctamente!!, Inicie sesion');
+        this.presentToast('Usuario Registrado. Puede iniciar sesión.');
         this.storage.set('USER_DATA',data);
         // this.router.navigate(['home']);
       })
@@ -76,6 +85,15 @@ export class RegisterPage implements OnInit {
       }
     }
     return true;
+  }
+
+  validatePassword() {
+    // eslint-disable-next-line eqeqeq
+    if(this.login.Password == this.login.repetirPassword){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   async presentToast(message: string, duration?: number){
