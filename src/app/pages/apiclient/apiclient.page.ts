@@ -1,6 +1,7 @@
 import { APIClientService } from 'src/app/services/apiclient/apiclient.service';
 import { Component, OnInit, ɵisDefaultChangeDetectionStrategy } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-apiclient',
@@ -18,6 +19,8 @@ export class ApiclientPage {
 
  // Nueva propiedad para cargar exclusivamente el primer usuario
  usuario: any;
+
+ loggedUser: any;
 
  // Esta propiedad se usa para mantener los datos de la nueva publicación o de la
  // edición de una publicación ya existente. Para ello la propiedad se liga usando
@@ -46,7 +49,8 @@ export class ApiclientPage {
 
  constructor(
    private api: APIClientService,
-   private toastController: ToastController) {
+   private toastController: ToastController,
+   private storage: Storage) {
  }
 
  // El siguiente es uno de los eventos del ciclo de vida de las páginas en Ionic/Angular.
@@ -68,6 +72,14 @@ export class ApiclientPage {
    this.getPublicaciones();
    this.selectedUserId = 1;
    this.cambiarUsuario(1);
+   this.getUserName();
+  }
+
+  // Este método recupera el nombre de usuario desde Storage para mostrarlo en pantalla.
+  getUserName(){
+    this.storage.get('USER_DATA').then((data)=>{
+      this.loggedUser = Object.assign(data);
+    });
   }
 
  // Este método se ejecuta cada vez que el usuario cambia el nombre del "Publicador",

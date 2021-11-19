@@ -17,9 +17,9 @@
 
   <ion-toolbar>
     <ion-card>
-      <ion-item lines="none" *ngIf="usuario"> 
+      <ion-item lines="none" *ngIf="loggedUser"> 
         <span>
-          Usuario: {{ usuario.name }}
+          Usuario: {{ loggedUser.user_name }}
         </span>
         <!-- <ion-select placeholder="Seleccione su usuario"
             class="ion-float-right"

@@ -4,9 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController, LoadingController, Platform, AlertController } from '@ionic/angular';
 import { $ } from 'protractor';
 import jsQR from 'jsqr';
-import { Usuario } from 'src/app/model/Usuario';
+//import { Usuario } from 'src/app/model/Usuario';
 import { Animation, AnimationController } from '@ionic/angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+import { Storage } from '@ionic/storage';
 
 import { DBTaskService } from '../../services/dbtask/dbtask.service';
 import { AuthenticationService} from '../../services/authentication/authentication.service';
@@ -23,7 +24,8 @@ export class HomePage implements OnInit, AfterViewInit {
   @ViewChild('canvas', { static: false }) canvas: ElementRef;
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  public usuario: Usuario;
+  //public usuario: Usuario;
+  usuario: any;
 
   canvasElement: any;
   videoElement: any;
@@ -41,7 +43,8 @@ export class HomePage implements OnInit, AfterViewInit {
     private qrScanner: QRScanner,
     private animationController: AnimationController,
     public dbtaskService: DBTaskService,
-    public authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService,
+    private storage: Storage
   ) {
 
     const isInStandaloneMode = () =>
@@ -64,6 +67,13 @@ export class HomePage implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.qrScanner.prepare()
       .then((status: QRScannerStatus) => status.authorized);
+  }
+
+  getUserName(){
+    this.storage.get('USER_DATA').then((data)=>{
+      this.usuario = Object.assign(data);
+    });
+    //this.dbtaskService.getSessionData();
   }
 
   ngAfterViewInit(): void {
@@ -201,13 +211,13 @@ export class HomePage implements OnInit, AfterViewInit {
     img.src = URL.createObjectURL(file);
   }
 
-
   /**
    * Antes de que se muestre la visual
    * se redirection a la url especifica
    */
   ionViewWillEnter(){
     this.router.navigate(['home']);
+    this.getUserName();
   }
   /**
    * Función que permite cerrar la sesión actual
